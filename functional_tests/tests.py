@@ -41,9 +41,9 @@ class NewVisitorTest(LiveServerTestCase):
         # When she hits enter, she is taken to a new URL, and now the page
         # lists "1: Buy peacock feathers" as an item in a to-do list table.
         inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, '/lists/.+')
-        time.sleep(1)
         self.check_for_row_in_list_table('1: Buy peacock feathers')
 
         # There is still a text box inviting her to add another item. She
@@ -69,7 +69,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
-        self.asserrNotIn('Buy peacock feathers', page_text)
+        self.assertNotIn('Buy peacock feathers', page_text)
         self.assertNotIn('make feathers', page_text)
 
         # Francis starts a new list by entering a new item.
@@ -78,6 +78,7 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys('Buy milk')
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
+
 
         # Francis gets his own unique URL
         francis_list_url = self.browser.current_url
